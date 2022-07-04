@@ -1,153 +1,84 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/result.dart';
 import './result.dart';
+import './constants.dart';
+import './quiz.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _MyAppState();
+    return MyAppState();
   }
 }
 
-class _MyAppState extends State<MyApp> {
-  final _questions = [
-    {
-      'q': 'The economy is: ',
-      'ans1': 'Strong',
-      'ans2': 'Weak',
-    },
-    {
-      'q': 'The economic outlook is: ',
-      'ans1': 'Positive',
-      'ans2': 'Negative',
-    },
-    {
-      'q': 'Lenders are:  ',
-      'ans1': 'Eager',
-      'ans2': 'Reticent',
-    },
-  ];
-  double _fontsize = 20;
-  var _questionIndex = 0;
+class MyAppState extends State<MyApp> {
 
-  void _answerQuestion() {
-    setState(() =>_questionIndex += 1);
-    //String ans =
+
+  var questionIndex = 0;
+
+
+  void answerQuestion() {
+    setState(() => questionIndex += 1);
   }
 
   int getQuestionIndex() {
-    return _questionIndex;
+    return questionIndex;
+  }
+
+  void _back() {
+    setState(() {
+      questionIndex -= 1;
+    });
   }
 
   void _reset() {
     setState(() {
-      _questionIndex = 0;
+      questionIndex = 0;
     });
   }
 
-  Widget q0(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(_questions[0]['q'].toString(),
-                  style: TextStyle(fontSize: _fontsize)),
-            ],
-          ),
-        ),
-        Column(
-          children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              ElevatedButton(
-                onPressed: _answerQuestion,
-                child: Text(_questions[0]['ans1'].toString()),
-              ),
-              ElevatedButton(
-                onPressed: _answerQuestion,
-                child: Text(_questions[0]['ans2'].toString()),
-              ),
-            ]),
-          ],
-        ),
-      ],
-    );
-  }
 
-  Widget q1(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+  Widget q0(BuildContext context, var question) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(question['q'].toString(),
+                    style: TextStyle(fontSize: fontsize)),
+              ],
+            ),
+          ),
+          Column(
             children: [
-              Text(_questions[1]['q'].toString(),
-                  style: TextStyle(fontSize: _fontsize)),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                ElevatedButton(
+                  onPressed: answerQuestion,
+                  child: Text(question['ans1'].toString()),
+                ),
+                ElevatedButton(
+                  onPressed: answerQuestion,
+                  child: Text(question['ans2'].toString()),
+                ),
+              ]),
             ],
           ),
-        ),
-        Column(
-          children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              ElevatedButton(
-                onPressed: _answerQuestion,
-                child: Text(_questions[1]['ans1'].toString()),
-              ),
-              ElevatedButton(
-                onPressed: _answerQuestion,
-                child: Text(_questions[1]['ans2'].toString()),
-              ),
-            ]),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget q2(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(_questions[2]['q'].toString(),
-                  style: TextStyle(fontSize: _fontsize)),
-            ],
-          ),
-        ),
-        Column(
-          children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              ElevatedButton(
-                onPressed: _answerQuestion,
-                child: Text(_questions[2]['ans1'].toString()),
-              ),
-              ElevatedButton(
-                onPressed: _answerQuestion,
-                child: Text(_questions[2]['ans2'].toString()),
-              ),
-            ]),
-          ],
-        ),
-      ],
-    );
-  }
+        ],
+      );
+    }
 
   Widget quiz(BuildContext context) {
-    return Column(
-      children: [
-        q0(context),
-        q1(context),
-        q2(context),
-      ],
-    );
+      return Column(
+        children: [
+          ...questions.map((var question) {
+            return q0(context, question);
+          }
+          )
+        ],
+      );
   }
 
   @override
@@ -156,16 +87,14 @@ class _MyAppState extends State<MyApp> {
       home: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('Very good app'),
+            title: Text("Question " + questionIndex.toString()),
           ),
           body: ListView(
             padding: const EdgeInsets.all(10),
             children: [
-              _questionIndex < _questions.length
-                  ? Column(
-                      //quiz
-                      children: [quiz(context)],
-                    )
+              Container(child: BackButton(onPressed: _back,), alignment: Alignment.topLeft,),
+              questionIndex < questions.length
+                  ? quiz(context) // main content
                   : Result(), // end page
             ],
           ),
