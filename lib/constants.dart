@@ -23,4 +23,39 @@ final questions = [
     'ans1': 'Loose',
     'ans2': 'Tight',
   },
+  {
+    'q': 'Capital is:  ',
+    'ans1': 'Plentiful',
+    'ans2': 'Scarce',
+  },
+  {
+    'q': 'Terms are:  ',
+    'ans1': 'Easy',
+    'ans2': 'Restrictive',
+  },
+  {
+    'q': 'Interest rates are:  ',
+    'ans1': 'Low',
+    'ans2': 'High',
+  },
+  {
+    'q': 'Spreads are: ',
+    'ans1': 'Narrow',
+    'ans2': 'Wide',
+  },
+  {
+    'q': 'Investors are:  ',
+    'ans1': 'Optimistic',
+    'ans2': 'Pessimistic',
+  },
+  {
+    'q': 'Investors are:  ',
+    'ans1': 'Sanguine',
+    'ans2': 'Distressed',
+  },
+  {
+    'q': 'Investors are:  ',
+    'ans1': 'Eager to buy',
+    'ans2': 'Uninterested in buying',
+  },
 ];

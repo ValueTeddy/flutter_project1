@@ -13,10 +13,7 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-
-
   var questionIndex = 0;
-
 
   void answerQuestion() {
     setState(() => questionIndex += 1);
@@ -38,47 +35,35 @@ class MyAppState extends State<MyApp> {
     });
   }
 
-
   Widget q0(BuildContext context, var question) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(question['q'].toString(),
-                    style: TextStyle(fontSize: fontsize)),
-              ],
-            ),
-          ),
-          Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                ElevatedButton(
-                  onPressed: answerQuestion,
-                  child: Text(question['ans1'].toString()),
-                ),
-                ElevatedButton(
-                  onPressed: answerQuestion,
-                  child: Text(question['ans2'].toString()),
-                ),
-              ]),
+              Text(question['q'].toString(),
+                  style: TextStyle(fontSize: fontsize)),
             ],
           ),
-        ],
-      );
-    }
-
-  Widget quiz(BuildContext context) {
-      return Column(
-        children: [
-          ...questions.map((var question) {
-            return q0(context, question);
-          }
-          )
-        ],
-      );
+        ),
+        Column(
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              ElevatedButton(
+                onPressed: answerQuestion,
+                child: Text(question['ans1'].toString()),
+              ),
+              ElevatedButton(
+                onPressed: answerQuestion,
+                child: Text(question['ans2'].toString()),
+              ),
+            ]),
+          ],
+        ),
+      ],
+    );
   }
 
   @override
@@ -87,14 +72,27 @@ class MyAppState extends State<MyApp> {
       home: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: Text("Question " + questionIndex.toString()),
+            title: Text(questionIndex < questions.length
+                ? "Question " + questionIndex.toString()
+                : "Great job"),
           ),
           body: ListView(
             padding: const EdgeInsets.all(10),
             children: [
-              Container(child: BackButton(onPressed: _back,), alignment: Alignment.topLeft,),
+              Container(
+                alignment: Alignment.topLeft,
+                child: BackButton(
+                  onPressed: _back,
+                ),
+              ),
               questionIndex < questions.length
-                  ? quiz(context) // main content
+                  ? Column(
+                children: [
+                  ...questions.map((var question) {
+                    return q0(context, question);
+                  })
+                ],
+              ) // main content
                   : Result(), // end page
             ],
           ),
