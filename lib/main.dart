@@ -1,110 +1,120 @@
 import 'package:flutter/material.dart';
-import './result.dart';
-import './constants.dart';
-import './quiz.dart';
+import 'package:flutter_tutorial/Quiz.dart';
+import 'result.dart';
+import 'constants.dart';
+import 'Quiz.dart';
+import 'HeaderDrawer.dart';
+import 'Dashboard.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return MyAppState();
-  }
+void main() {
+  runApp(MyApp());
 }
 
-class MyAppState extends State<MyApp> {
-  var questionIndex = 0;
-
-  void answerQuestion() {
-    setState(() => questionIndex += 1);
-  }
-
-  int getQuestionIndex() {
-    return questionIndex;
-  }
-
-  void _back() {
-    setState(() {
-      questionIndex -= 1;
-    });
-  }
-
-  void _reset() {
-    setState(() {
-      questionIndex = 0;
-    });
-  }
-
-  Widget q0(BuildContext context, var question) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(question['q'].toString(),
-                  style: TextStyle(fontSize: fontsize)),
-            ],
-          ),
-        ),
-        Column(
-          children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              ElevatedButton(
-                onPressed: answerQuestion,
-                child: Text(question['ans1'].toString()),
-              ),
-              ElevatedButton(
-                onPressed: answerQuestion,
-                child: Text(question['ans2'].toString()),
-              ),
-            ]),
-          ],
-        ),
-      ],
-    );
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(questionIndex < questions.length
-                ? "Question " + questionIndex.toString()
-                : "Great job"),
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    );
+  }
+}
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+class _HomePageState extends State<HomePage> {
+  var currentPage = DrawerSelections.dashboard;
+
+  @override
+  Widget build(BuildContext context) {
+    var contents;
+    if (currentPage == DrawerSelections.dashboard) {
+      contents = Dashboard();
+    } else if (currentPage == DrawerSelections.quiz) {
+      contents = Quiz();
+    }
+
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "What an insanely good app",
           ),
-          body: ListView(
-            padding: const EdgeInsets.all(10),
+        ),
+        body: contents,
+        drawer: Drawer(
+          child: SingleChildScrollView(
+            child: Container(
+              child: Column(
+                children: [
+                  HeaderDrawer(),
+                  drawerList(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+  }
+
+  Widget drawerList() {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 15,
+      ),
+      child: Column(
+        children: [
+          menuItem(1, "Dashboard", Icons.dashboard_outlined,
+              currentPage == DrawerSelections.dashboard ? true : false),
+          menuItem(2, "Notes", Icons.abc_outlined,
+              currentPage == DrawerSelections.notes ? true : false),
+          menuItem(3, "Quiz", Icons.analytics_outlined,
+              currentPage == DrawerSelections.quiz ? true : false),
+        ],
+      ),
+    );
+  }
+
+  Widget menuItem(int id, String title, IconData icon, bool selected) {
+    return Material(
+      color: selected ? Colors.grey[300] : Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          Navigator.pop(context);
+          setState(() {
+            if (id == 1) {
+              currentPage = DrawerSelections.dashboard;
+            } else if (id == 3) {
+              currentPage = DrawerSelections.quiz;
+            }
+          });
+        },
+        child: Padding(
+          padding: EdgeInsets.all(15),
+          child: Row(
             children: [
-              Container(
-                alignment: Alignment.topLeft,
-                child: BackButton(
-                  onPressed: _back,
+              Expanded(
+                child: Icon(
+                  icon,
+                  size: 30,
+                  color: Colors.black,
                 ),
               ),
-              questionIndex < questions.length
-                  ? Column(
-                children: [
-                  ...questions.map((var question) {
-                    return q0(context, question);
-                  })
-                ],
-              ) // main content
-                  : Result(), // end page
+              Expanded(
+                  child: Text(
+                title,
+                style: TextStyle(color: Colors.black),
+              ))
             ],
-          ),
-          bottomNavigationBar: BottomAppBar(
-            child: OverflowBar(
-              children: [
-                TextButton(onPressed: _reset, child: const Text("reset")),
-              ],
-            ),
           ),
         ),
       ),
     );
   }
+}
+
+enum DrawerSelections {
+  dashboard,
+  notes,
+  quiz,
 }
