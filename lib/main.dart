@@ -1,34 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/Quiz.dart';
-import 'result.dart';
-import 'constants.dart';
 import 'Quiz.dart';
 import 'HeaderDrawer.dart';
 import 'Dashboard.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
   }
 }
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   var currentPage = DrawerSelections.dashboard;
 
   @override
   Widget build(BuildContext context) {
-    var contents;
+    StatefulWidget contents = HomePage();
     if (currentPage == DrawerSelections.dashboard) {
       contents = Dashboard();
     } else if (currentPage == DrawerSelections.quiz) {
@@ -37,20 +39,18 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             "What an insanely good app",
           ),
         ),
         body: contents,
         drawer: Drawer(
           child: SingleChildScrollView(
-            child: Container(
-              child: Column(
-                children: [
-                  HeaderDrawer(),
-                  drawerList(),
-                ],
-              ),
+            child: Column(
+              children: [
+                HeaderDrawer(),
+                drawerList(),
+              ],
             ),
           ),
         ),
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget drawerList() {
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: 15,
       ),
       child: Column(
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
           });
         },
         child: Padding(
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           child: Row(
             children: [
               Expanded(
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                   child: Text(
                 title,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ))
             ],
           ),

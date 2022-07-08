@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import './result.dart';
 import './constants.dart';
-import './Quiz.dart';
-import './main.dart';
 
 class Quiz extends StatefulWidget {
+  const Quiz({Key? key}) : super(key: key);
+
   @override
-  _QuizState createState() => _QuizState();
+  QuizState createState() => QuizState();
 }
 
-class _QuizState extends State<Quiz> {
+class QuizState extends State<Quiz> {
   var questionIndex = 0;
 
   void answerQuestion() {
