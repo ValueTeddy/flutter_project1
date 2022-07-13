@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './result.dart';
-import './constants.dart';
+import 'result.dart';
+import '../../data/constants.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({Key? key}) : super(key: key);
@@ -12,12 +12,12 @@ class Quiz extends StatefulWidget {
 class QuizState extends State<Quiz> {
   var questionIndex = 0;
 
-  void answerQuestion() {
-    setState(() => questionIndex += 1);
-  }
-
   int getQuestionIndex() {
     return questionIndex;
+  }
+
+  void answerQuestion() {
+    setState(() => questionIndex += 1);
   }
 
   void _back() {
@@ -33,33 +33,29 @@ class QuizState extends State<Quiz> {
   }
 
   Widget quiz(BuildContext context, var question) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 80),
+      child: Column(
+        children: [
+          Row(
             children: [
-              Text(question['q'].toString(),
-                  style: TextStyle(fontSize: fontsize)),
+              Text("Question: "),
+              Text("${questionIndex + 1}/${questions.length}"),
             ],
           ),
-        ),
-        Column(
-          children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          Text("${questions[questionIndex].getQuestion()}"),
+          Row(
+            children: [
               ElevatedButton(
-                onPressed: answerQuestion,
-                child: Text(question['ans1'].toString()),
-              ),
+                  onPressed: onPressed,
+                  child: Text("${question[questionIndex].getAnswer1}")),
               ElevatedButton(
-                onPressed: answerQuestion,
-                child: Text(question['ans2'].toString()),
-              ),
-            ]),
-          ],
-        ),
-      ],
+                  onPressed: onPressed,
+                  child: Text("${question[questionIndex].getAnswer2}")),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

@@ -1,30 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/Quiz.dart';
-import 'Quiz.dart';
-import 'HeaderDrawer.dart';
-import 'Dashboard.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'dashboard.dart';
+import 'quiz.dart';
+import 'header_drawer.dart';
+
+enum DrawerSelections {
+  dashboard,
+  notes,
+  quiz,
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
-    );
-  }
-}
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   HomePageState createState() => HomePageState();
 }
+
 class HomePageState extends State<HomePage> {
   var currentPage = DrawerSelections.dashboard;
 
@@ -38,23 +30,23 @@ class HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "What an insanely good app",
+      appBar: AppBar(
+        title: const Text(
+          "What an insanely good app",
+        ),
+      ),
+      body: contents,
+      drawer: Drawer(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              HeaderDrawer(),
+              drawerList(),
+            ],
           ),
         ),
-        body: contents,
-        drawer: Drawer(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                HeaderDrawer(),
-                drawerList(),
-              ],
-            ),
-          ),
-        ),
-      );
+      ),
+    );
   }
 
   Widget drawerList() {
@@ -111,10 +103,4 @@ class HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-enum DrawerSelections {
-  dashboard,
-  notes,
-  quiz,
 }

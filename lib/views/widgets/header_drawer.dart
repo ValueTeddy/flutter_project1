@@ -19,14 +19,20 @@ class HeaderDrawerState extends State<HeaderDrawer> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-           margin: const EdgeInsets.only(bottom: 10),
-           height: 70,
-           decoration: const BoxDecoration(
-             shape: BoxShape.circle,
-           ),
+            margin: const EdgeInsets.only(bottom: 10),
+            height: 70,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+            ),
           ),
-        const Text("Hey hey hey", style: TextStyle(color: Colors.white, fontSize: 20),),
-        const Text("Whoa", style: TextStyle(color: Colors.cyanAccent, fontSize: 10),),
+          const Text(
+            "Hey hey hey",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          const Text(
+            "Whoa",
+            style: TextStyle(color: Colors.cyanAccent, fontSize: 10),
+          ),
         ],
       ),
     );
