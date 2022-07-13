@@ -24,9 +24,9 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     StatefulWidget contents = HomePage();
     if (currentPage == DrawerSelections.dashboard) {
-      contents = Dashboard();
+      contents = const Dashboard();
     } else if (currentPage == DrawerSelections.quiz) {
-      contents = Quiz();
+      contents = const Quiz();
     }
 
     return Scaffold(
@@ -40,7 +40,7 @@ class HomePageState extends State<HomePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              HeaderDrawer(),
+              const HeaderDrawer(),
               drawerList(),
             ],
           ),
